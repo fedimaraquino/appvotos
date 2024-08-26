@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h2>Excluir Seção</h2>
+  <p>Você tem certeza que deseja excluir a seção {{ secao.local }}?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    <a href="{% url 'secao_list' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}

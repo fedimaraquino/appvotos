@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Resultados Registrados</h2>
+
+  {% if resultados %}
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Seção</th>
+          <th>Cargo</th>
+          <th>Candidato</th>
+          <th>Votos Válidos</th>
+          <th>Votos Brancos</th>
+          <th>Votos Nulos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for resultado in resultados %}
+          <tr>
+            <td>{{ resultado.secao.numero }}</td>
+            <td>{{ resultado.cargo.cargo }}</td>
+            <td>{{ resultado.candidato.nome }}</td>
+            <td>{{ resultado.votos_validos }}</td>
+            <td>{{ resultado.votos_branco }}</td>
+            <td>{{ resultado.votos_nulos }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="alert alert-info">Nenhum resultado foi registrado até o momento.</p>
+  {% endif %}
+
+  <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar ao Dashboard</a>
+{% endblock %}

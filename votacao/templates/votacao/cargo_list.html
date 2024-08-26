@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h2>Cargos</h2>
+  {% if cargos %}
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Cargo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cargo in cargos %}
+          <tr>
+            <td>{{ cargo.cargo }}</td>
+            <td>
+              <a href="{% url 'cargo_update' cargo.id %}" class="btn btn-sm btn-warning">Editar</a>
+              <a href="{% url 'cargo_delete' cargo.id %}" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="alert alert-info">Não existem cargos cadastrados.</p>
+  {% endif %}
+  <a href="{% url 'cargo_create' %}" class="btn btn-success">Adicionar Cargo</a>
+{% endblock %}

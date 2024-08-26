@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h2>{% if form.instance.pk %}Editar Cargo{% else %}Adicionar Cargo{% endif %}</h2>
+  <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="invalid-feedback">
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{% url 'cargo_list' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}

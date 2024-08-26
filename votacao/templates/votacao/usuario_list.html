@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h2>Usuários</h2>
+  {% if usuarios %}
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Nome</th>
+          <th>Seção</th>
+          <th>Perfil</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+          <tr>
+            <td>{{ usuario.nome }}</td>
+            <td>{{ usuario.secao.numero }}</td>
+            <td>{{ usuario.get_perfil_display }}</td>
+            <td>
+              <a href="{% url 'usuario_update' usuario.id %}" class="btn btn-sm btn-warning">Editar</a>
+              <a href="{% url 'usuario_delete' usuario.id %}" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="alert alert-info">Não existem usuários cadastrados.</p>
+  {% endif %}
+  <a href="{% url 'usuario_create' %}" class="btn btn-success">Adicionar Usuário</a>
+{% endblock %}
