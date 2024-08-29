@@ -3,17 +3,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Secao, Usuario, Candidato, Cargo, Apurado
 from .forms import SecaoForm, UsuarioForm, CandidatoForm, CargoForm, ApuradoForm
 from functools import wraps
-from .forms import SecaoForm, UsuarioForm, CandidatoForm, CargoForm, ApuradoForm
-from django.shortcuts import render, redirect
-from votacao.models import Cargo, Secao, Candidato, Usuario, Perfil
-from votacao.models import Candidato, Apurado, Secao
+from votacao.models import Cargo, Secao, Candidato, Usuario, Perfil, Apurado
 from votacao.forms import ApuradoForm
 from .decorators import profile_required
 from .models import Usuario, Candidato, Secao, Cargo, Apurado
 from .forms import ApuradoForm
-from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
-
+from django.contrib.auth.models import User
+from .forms import UsuarioForm
+from django.contrib import messages
+from django.db import IntegrityError
 
 # Secao Views
 def secao_list(request):
@@ -53,6 +52,51 @@ def usuario_list(request):
     usuarios = Usuario.objects.all()
     return render(request, 'votacao/usuario_list.html', {'usuarios': usuarios})
 
+
+
+# def usuario_create(request):
+#     if request.method == 'POST':
+#         form = UsuarioForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)  # Cria o objeto Usuario, mas não salva ainda
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password']
+#             # Crie o usuário do Django e associe ao modelo Usuario
+#             user_django = User.objects.create_user(username=username, password=password)
+#             user.user = user_django  # Associe o User do Django ao campo user do modelo Usuario
+#             user.save()  # Agora salva o objeto Usuario com o user_id preenchido
+#             return redirect('usuarios_list')  # Certifique-se de que 'usuarios_list' está mapeado corretamente
+#     else:
+#         form = UsuarioForm()
+
+#     return render(request, 'votacao/usuario_form.html', {'form': form})
+
+#__________________________________________________________________________________
+
+# def usuario_create(request):
+#     if request.method == 'POST':
+#         form = UsuarioForm(request.POST)
+#         if form.is_valid():
+#             try:
+#                 # Criação do objeto User
+#                 user = User.objects.create_user(
+#                     username=form.cleaned_data.get('username'),
+#                     password=form.cleaned_data.get('password'),
+#                 )
+                
+#                 # Criação do objeto Usuario e atribuição do user
+#                 usuario = form.save(commit=False)
+#                 usuario.user = user
+#                 usuario.save()
+                
+#                 return redirect('usuario_list')
+#             except IntegrityError:
+#                 # Adicione lógica de tratamento para erro de integridade
+#                 form.add_error(None, "Erro de integridade, possivelmente nome de usuário duplicado.")
+#     else:
+#         form = UsuarioForm()
+
+#     return render(request, 'votacao/usuario_form.html', {'form': form})
 def usuario_create(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -62,6 +106,7 @@ def usuario_create(request):
     else:
         form = UsuarioForm()
     return render(request, 'votacao/usuario_form.html', {'form': form})
+
 
 def usuario_update(request, id):
     usuario = get_object_or_404(Usuario, id=id)
